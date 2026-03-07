@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>教會電週報</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/themereflex/dflip-lite@master/js/dflip.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/themereflex/dflip-lite@master/css/dflip.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/js/dflip.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/css/dflip.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/css/themify-icons.min.css">
 </head>
-<body style="margin:0; background-color: #333;">
-
-  <div class="_df_book" source="weekly.pdf" id="df_book_viewer"></div>
+<body style="margin:0; background-color: #444;"> <div class="_df_book" source="weekly.pdf" id="df_book_viewer"></div>
 
   <style>
-    /* 讓翻頁書充滿全螢幕 */
     #df_book_viewer { height: 100vh; width: 100vw; }
+    /* 修正移動端顯示問題 */
+    .df-container { height: 100% !important; }
   </style>
 </body>
 </html>
