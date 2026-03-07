@@ -11,35 +11,46 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/css/themify-icons.min.css">
 
   <style>
-    body, html { margin:0; padding:0; height: 100%; background-color: #222; overflow: hidden; font-family: sans-serif; }
+    body, html { margin:0; padding:0; height: 100%; background-color: #222; overflow: hidden; }
     #df_book_viewer { height: 100vh; width: 100vw; }
-    .fallback-btn { 
-      display: none; position: absolute; top: 50%; left: 50%; 
-      transform: translate(-50%, -50%); color: white; text-align: center; 
+    
+    /* 質感轉圈圈動畫 */
+    .loader {
+      border: 4px solid #f3f3f3; border-top: 4px solid #00b900;
+      border-radius: 50%; width: 40px; height: 40px;
+      animation: spin 1s linear infinite;
+      position: absolute; top: 45%; left: 50%; margin-left: -20px;
     }
-    .btn { 
-      background: #00b900; color: white; padding: 15px 30px; 
-      border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 20px; 
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .loading-text { 
+      color: #999; text-align: center; width: 100%; position: absolute; top: 55%; font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-  <div class="_df_book" source="weekly.pdf" id="df_book_viewer"></div>
-
-  <div class="fallback-btn" id="fallback">
-    <p>週報載入較慢</p>
-    <a href="weekly.pdf" class="btn">點此直接打開週報</a>
+  <div id="loading-area">
+    <div class="loader"></div>
+    <div class="loading-text">Hlllc 週報載入中...</div>
   </div>
+
+  <div class="_df_book" source="weekly.pdf" id="df_book_viewer"></div>
 
   <script>
     $(document).ready(function () {
-      // 5秒偵測機制
+      // 當書本結構出現時，自動移除載入動畫
+      var checkExist = setInterval(function() {
+         if ($('.df-container').length) {
+            $('#loading-area').fadeOut();
+            clearInterval(checkExist);
+         }
+      }, 500); 
+
+      // 萬一 10 秒還是跑不出來（保險開關）
       setTimeout(function(){
-        if ($(".df-container").length === 0) {
-          $("#fallback").show();
-        }
-      }, 5000);
+        $('#loading-area').html('<a href="weekly.pdf" style="color:#00b900; text-decoration:none; border:1px solid #00b900; padding:10px; border-radius:5px;">載入較久，點此直接開啟</a>');
+      }, 10000);
     });
   </script>
 </body>
