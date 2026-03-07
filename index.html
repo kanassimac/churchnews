@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
     <meta charset="utf-8">
     <title>Hlllc電子週報</title>
@@ -7,45 +7,45 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/css/dflip.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/css/themify-icons.min.css">
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/js/dflip.min.js"></script>
+
     <style>
         body, html { margin:0; padding:0; height:100%; background-color:#1a1a1a; overflow:hidden; }
-        #book-viewer { height:100vh; width:100vw; }
-        .loading-mask { 
+        #book-container { height:100vh; width:100vw; }
+        /* 讀取畫面：使用原生 CSS，不依賴 JS 確保一定會顯示 */
+        #loader { 
             position:fixed; top:0; left:0; width:100%; height:100%; 
             background:#1a1a1a; color:#00b900; display:flex; 
-            justify-content:center; align-items:center; z-index:999; 
+            justify-content:center; align-items:center; z-index:9999; 
             font-family:sans-serif;
         }
     </style>
 </head>
 <body>
-    <div id="loading-mask" class="loading-mask">週報讀取中...</div>
-    <div id="book-viewer"></div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dflip/1.0.95/js/dflip.min.js"></script>
+    <div id="loader">週報讀取中...</div>
+    <div id="book-container"></div>
 
     <script>
-        // 確保所有資源載入後才執行
         $(document).ready(function() {
+            // 強制執行：3 秒後不管有沒有成功，一定要把讀取畫面關掉
+            setTimeout(function() {
+                $("#loader").fadeOut();
+            }, 3000);
+
             var pdfUrl = "weekly.pdf";
+            
+            // 最穩定的參數設定
             var options = {
-                // 核心關鍵：強制關閉 WebGL 3D，使用 2D 模式。
-                // 這能解決手機端全黑或跑不動的問題，且依然有翻頁動畫。
-                webgl: false, 
-                height: 2000,
-                duration: 600,
-                backgroundColor: "#1a1a1a"
+                webgl: false,       // 關鍵：關閉 3D 渲染，改用 2D，這是解決手機卡死的唯一方法
+                height: "100%",
+                duration: 500,
+                enableDownload: true
             };
 
-            // 手動初始化
-            var dFlip = $("#book-viewer").flipBook(pdfUrl, options);
-            
-            // 2秒後強行關閉讀取畫面
-            setTimeout(function() {
-                $("#loading-mask").fadeOut();
-            }, 2000);
+            // 啟動翻頁書
+            $("#book-container").flipBook(pdfUrl, options);
         });
     </script>
 </body>
